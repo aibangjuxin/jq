@@ -1,0 +1,90 @@
+➜  ~ /usr/bin/python -V
+Python 2.7.16
+➜  ~ /usr/bin/python3 -V
+Python 3.8.2
+
+package.json
+➜  ~ cat package.json|wc -m
+209
+具体内容如下：
+{
+    "name": "lex",
+    "version": "1.0.0",
+    "description": "description",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC"
+}
+
+➜  ~ cat package.json|python2 -m json.tool
+{
+    "author": "",
+    "description": "description",
+    "license": "ISC",
+    "main": "index.js",
+    "name": "lex",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "version": "1.0.0"
+}
+➜  ~ cat package.json|python3 -m json.tool
+{
+    "name": "lex",
+    "version": "1.0.0",
+    "description": "description",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC"
+}
+
+去掉了第十行
+➜  ~ cat package.json|python3 -m json.tool
+Expecting ',' delimiter: line 10 column 1 (char 207)
+➜  ~ bat package.json
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: package.json
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ {  "name": "lex",
+   2   │   "version": "1.0.0",
+   3   │   "description": "description",
+   4   │   "main": "index.js",
+   5   │   "scripts": {
+   6   │     "test": "echo \"Error: no test specified\" && exit 1"
+   7   │   },
+   8   │   "author": "",
+   9   │   "license": "ISC"
+───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────几个典型的报错分析：9行结尾➕了,
+➜  ~ cat package.json|python3 -m json.tool
+Expecting property name enclosed in double quotes: line 10 column 1 (char 208)
+要求属性名用双引号括起来：第10行第1列
+➜  ~ cat package.json|wc -m
+210
+➜  ~ bat package.json
+───────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: package.json
+───────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ {  "name": "lex",
+   2   │   "version": "1.0.0",
+   3   │   "description": "description",
+   4   │   "main": "index.js",
+   5   │   "scripts": {
+   6   │     "test": "echo \"Error: no test specified\" && exit 1"
+   7   │   },
+   8   │   "author": "",
+   9   │   "license": "ISC",
+  10   │ }
+───────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+➜  ~ cat package.json|python3 -m json.tool
+Expecting ',' delimiter: line 5 column 3 (char 95)
+
+在vim输入以下命令就可以格式化
+:%!python -m json.tool
+可以在~/.vimrc增加快捷键
+map <F4> <Esc>:%!python -m json.tool<CR>
