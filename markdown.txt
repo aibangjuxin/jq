@@ -1,0 +1,48 @@
+代码引用. 需要引用代码时，如果引用的语句只有一段，不分行，
+ 可以用 ` 将语句包起来。
+
+ 如果引用的语句为多行，可以将```置于这段代码的首行和末行
+
+
+
+ 将需要的包直接放到工作目录下
+>```
+>
+FROM  centos
+MAINTAINER mymail@test.com
+RUN  yum -y install gcc*  make pcre-devel zlib-devel zlib openssl openssl-devel pcre
+ADD tengine-2.3.2.tar  /usr/src/
+WORKDIR /usr/src/tengine-2.3.2/
+RUN useradd -s /sbin/nologin -M nginx
+RUN ./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --with-http_stub_status_module && make && make install
+RUN ln -s /usr/local/nginx/sbin/* /usr/local/sbin/
+EXPOSE 80
+WORKDIR /
+RUN nginx
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+
+
+>```
+FROM  centos
+MAINTAINER mymail@test.com
+RUN  yum -y install gcc*  make pcre-devel zlib-devel zlib openssl openssl-devel pcre
+ADD tengine-2.3.2.tar  /usr/src/
+WORKDIR /usr/src/tengine-2.3.2/
+RUN useradd -s /sbin/nologin -M nginx
+RUN ./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --with-http_stub_status_module && make && make install
+RUN ln -s /usr/local/nginx/sbin/* /usr/local/sbin/
+EXPOSE 80
+WORKDIR /
+RUN nginx
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+
+查看
+>```
+>➜  docker_nginx docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
+df39176c0181        centos:nginx        "nginx -g 'daemon of…"   23 seconds ago      Up 18 seconds       0.0.0.0:80->80/tcp   nginx
+
